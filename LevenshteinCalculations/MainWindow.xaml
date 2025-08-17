@@ -1,0 +1,63 @@
+﻿<Window x:Class="LevenshteinCalculations.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LevenshteinCalculations"
+        mc:Ignorable="d"
+        Title="Levenshtein Calculator: Main Page" Height="600" Width="1200"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="281*"/>
+            <ColumnDefinition Width="64*"/>
+            <ColumnDefinition Width="68*"/>
+            <ColumnDefinition Width="387*"/>
+        </Grid.ColumnDefinitions>
+        <TextBox x:Name="TargetString" GotKeyboardFocus="TargetString_GotKeyboardFocus" TabIndex ="1" HorizontalAlignment="Left" Margin="61,65,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="TextBox_TextChanged" SelectionOpacity="-4" RenderTransformOrigin="0.428,1.947" Text="Target Text" AutomationProperties.HelpText="Enter your target text to compare to source"/>
+        <Button x:Name="Calculate" Content="Calculate" Margin="244,144,0,0" VerticalAlignment="Top" Click="Button_Click" RenderTransformOrigin="0.558,0.617" Height="48" Width="114"/>
+        <TextBox x:Name="SourceText" GotKeyboardFocus="TargetString_GotKeyboardFocus" TabIndex="2" HorizontalAlignment="Left" Margin="61,144,0,0" TextWrapping="Wrap" Text="Source Text" VerticalAlignment="Top" Width="150" TextChanged="SourceText_TextChanged" AutomationProperties.HelpText="Enter your source text to compare to tearget"/>
+        <DataGrid x:Name="WordGrid"  Margin="10,292,0,0" Grid.ColumnSpan="4" SelectionChanged="WordGrid_SelectionChanged" AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="RowClicked" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Target Word" Binding="{Binding TargetWord}" />
+                <DataGridTextColumn Header="Source Word" Binding="{Binding SourceWord}" />
+                <DataGridCheckBoxColumn Header="Scored" Binding="{Binding scored}" />
+                <DataGridCheckBoxColumn Header="Excluded" Binding="{Binding excluded}" />
+                <DataGridTextColumn Header="Levenstein Distance" Binding="{Binding levdistance}" />
+                <DataGridTextColumn Header="Initial Score" Binding="{Binding InitialScore}" />
+                <DataGridTextColumn Header="Source Distance" Binding="{Binding sourcedistance}" />
+                <DataGridTextColumn Header="Target Distance" Binding="{Binding targetdistance}" />
+                <DataGridTextColumn Header="Total Distance" Binding="{Binding totaldistance}" />
+
+            </DataGrid.Columns>
+        </DataGrid>
+        <TextBox x:Name="TotalWeight" GotKeyboardFocus="TargetString_GotKeyboardFocus" HorizontalAlignment="Left" Margin="244,65,0,0" TextWrapping="Wrap" Text="Weight" VerticalAlignment="Top" Width="66" TextChanged="TextBox_TextChanged_1" Height="30"/>
+        <Label Content="Total Score Before Weight:" HorizontalAlignment="Left" Margin="10,56,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3" Grid.Column="1"/>
+        <Label Content="Total Score With Weight: " HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3" Grid.Column="1"/>
+        <Label x:Name="WithWeight" Content="" HorizontalAlignment="Left" Margin="27,103,0,0" VerticalAlignment="Top" Grid.Column="3"/>
+        <Label x:Name="WithoutWeight" Content="" HorizontalAlignment="Left" Margin="32,56,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.33,-0.005" Grid.Column="3"/>
+        <Label Content="Target" HorizontalAlignment="Left" Margin="61,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.035,-0.165"/>
+        <Label Content="Source" HorizontalAlignment="Left" Margin="61,124,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.096,0.038"/>
+        <Button Name="toExcelButton" Content="Open to Excel" Margin="244,209,0,0" VerticalAlignment="Top" Click="toExcelButton_Click" Width="114"/>
+        <Button Name="exportButton" Content="Export to Excel" Margin="244,255,0,0" VerticalAlignment="Top" Width="114" Click="exportButton_Click"/>
+        <TextBox Name ="fileName" GotKeyboardFocus="TargetString_GotKeyboardFocus" HorizontalAlignment="Left" Margin="61,255,0,0" TextWrapping="Wrap" Text="File Name" VerticalAlignment="Top" Width="120"/>
+        <Label Content="File Name" HorizontalAlignment="Left" Margin="61,231,0,0" VerticalAlignment="Top"/>
+        <Label Content="Sum of Words(S): " HorizontalAlignment="Left" Margin="12,206,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.536,0.647" Grid.ColumnSpan="2" Grid.Column="1"/>
+        <Label Content="Sum of Distances(D):" HorizontalAlignment="Left" Margin="10,240,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.Column="1"/>
+        <Label Grid.Column="2" Content="" Name="lblSumOfWords" HorizontalAlignment="Right" Margin="0,206,10,0" VerticalAlignment="Top" RenderTransformOrigin="0.567,0.539"/>
+        <Label Grid.Column="2" Content="" Name="lblSumOfDistances" HorizontalAlignment="Right" Margin="0,240,10,0" VerticalAlignment="Top" RenderTransformOrigin="0.567,0.539"/>
+        <Label Grid.Column="3" Content="Total Score Calculation" HorizontalAlignment="Left" Margin="178,153,0,0" VerticalAlignment="Top"/>
+        <Label Grid.Column="3" Content="" Name="lblTotalScoreCalc" HorizontalAlignment="Left" Margin="178,206,0,0" VerticalAlignment="Top"/>
+        <Label Grid.Column="3" Content="((S-D)*100)/S" HorizontalAlignment="Left" Margin="178,177,0,0" VerticalAlignment="Top"/>
+        <CheckBox Content="Two Letter Word Scoring" Name="chkTwoWord" Margin="338,25,0,0" VerticalAlignment="Top" Grid.Column="3"/>
+        <CheckBox Grid.Column="3" Content="Single Word Score Reduction" Name="chkSingleWord" Margin="338,65,0,0" VerticalAlignment="Top"/>
+        <TextBox Grid.Column="3" HorizontalAlignment="Left" Margin="338,103,0,0" TextWrapping="Wrap" Text="Single Word Reduction Amount" Name="txtSingleWord" VerticalAlignment="Top" Width="206" Height="57"/>
+
+    </Grid>
+
+
+
+
+</Window>
